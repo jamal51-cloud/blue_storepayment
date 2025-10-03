@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP Payment - Blue Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      font-family: "Poppins", sans-serif;
+      height: 100vh; width: 100%;
+      display: flex; justify-content: center; align-items: center;
+      overflow: hidden; position: relative;
+      background: black;
+    }
+    /* Background GIF */
+    .bg {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url("https://files.catbox.moe/cj0oda.gif") repeat center center/cover;
+      z-index: -2;
+    }
+    /* Overlay transparan */
+    .overlay {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: -1;
+    }
+    /* Card utama */
+    .card {
+      position: relative;
+      background: rgba(255,255,255,0.08);
+      border-radius: 25px;
+      padding: 50px 30px 40px;
+      text-align: center;
+      width: 360px;
+      border: 2px solid rgba(255,215,0,0.8);
+      box-shadow: 0 0 30px rgba(255,215,0,0.6), inset 0 0 15px rgba(0,255,255,0.3);
+      backdrop-filter: blur(15px);
+      animation: fadeIn 1.5s ease;
+      z-index: 2;
+    }
+    /* VIP Label */
+    .vip {
+      position: absolute;
+      top: -20px; left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, gold, #ffcc00);
+      padding: 6px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 14px;
+      color: black;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px gold;
+    }
+    .card img {
+      width: 110px; height: 110px;
+      border-radius: 50%; border: 4px solid gold;
+      margin-bottom: 18px;
+      box-shadow: 0 0 20px rgba(255,215,0,0.8);
+    }
+    .card h1 {
+      font-family: "Montserrat", sans-serif;
+      font-size: 28px; margin-bottom: 8px;
+      color: gold; letter-spacing: 1px;
+    }
+    .card p {
+      font-size: 16px; margin: 5px 0;
+      color: #e0faff;
+    }
+    .nomor-box {
+      margin-top: 15px;
+      display: flex; justify-content: center; align-items: center;
+      gap: 10px;
+    }
+    .nomor {
+      font-size: 20px; font-weight: bold;
+      color: #ffea00;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 10px cyan;
+    }
+    .copy-btn {
+      background: linear-gradient(135deg, gold, #ffcc00);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      color: black;
+      box-shadow: 0 0 15px gold;
+      transition: 0.3s;
+    }
+    .copy-btn:hover {transform: scale(1.05); box-shadow: 0 0 25px gold;}
+    /* Tombol ID pojok kiri */
+    .idbtn {
+      position: absolute; top: 20px; left: 20px;
+      background: linear-gradient(135deg, gold, #ffcc00);
+      color: black; padding: 6px 14px;
+      border-radius: 8px; font-weight: bold;
+      cursor: pointer; box-shadow: 0 0 15px gold;
+      user-select: none; transition: 0.3s;
+      z-index: 3;
+    }
+    .idbtn:hover {transform: scale(1.1); box-shadow: 0 0 25px gold;}
+    /* ID Card */
+    .idcard {
+      position: absolute; top: 70px; left: 20px;
+      background: rgba(0,0,0,0.85);
+      padding: 15px 25px; border-radius: 15px;
+      font-size: 13px; line-height: 1.6;
+      border: 2px solid gold; 
+      box-shadow: 0 0 20px rgba(255,215,0,0.8);
+      max-width: 250px; 
+      opacity: 0; visibility: hidden;
+      transition: opacity 1s ease, visibility 1s ease;
+      z-index: 3;
+    }
+    .idcard.show {
+      opacity: 1;
+      visibility: visible;
+      animation: pulseGlow 2s infinite;
+    }
+    .idcard strong {color: gold; font-size: 14px;}
+    a {color: cyan; text-decoration: none;}
+    a:hover {color: #ffea00;}
+    /* Notif copy */
+    .notif {
+      position: fixed; bottom: 20px; right: 20px;
+      background: rgba(0,0,0,0.8);
+      padding: 10px 20px; border-radius: 10px;
+      color: gold; font-weight: bold;
+      box-shadow: 0 0 15px gold;
+      display: none;
+      z-index: 5;
+    }
+    /* Animasi */
+    @keyframes fadeIn {from {opacity:0; transform: scale(0.9);} to {opacity:1; transform: scale(1);}}
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px rgba(255,215,0,0.4); }
+      50% { box-shadow: 0 0 30px rgba(255,215,0,1); }
+      100% { box-shadow: 0 0 15px rgba(255,215,0,0.4); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background layer -->
+  <div class="bg"></div>
+  <div class="overlay"></div>
+
+  <!-- Tombol ID -->
+  <div class="idbtn" onclick="showID()">ID</div>
+
+  <!-- ID Card -->
+  <div class="idcard" id="idCard">
+    <strong>PEMBUAT WEB</strong><br>
+    CEO MD.<br>
+    JASA PEMBUATAN<br>
+    TELEGRAM: <a href="https://t.me/FlashMod58">t.me/FlashMod58</a>
+  </div>
+
+  <!-- Payment Card -->
+  <div class="card">
+    <div class="vip">⭐ VIP</div>
+    <img src="https://files.catbox.moe/8bf7zk.jpg" alt="Profile">
+    <h1>Blue Store</h1>
+    <p>💳 Pembayaran via DANA</p>
+    <div class="nomor-box">
+      <span class="nomor" id="danaNomor">081223944881</span>
+      <button class="copy-btn" onclick="copyNomor()">Salin</button>
+    </div>
+  </div>
+
+  <!-- Notifikasi copy -->
+  <div class="notif" id="notif">✅ Nomor berhasil disalin!</div>
+
+  <script>
+    let alreadyShown = false;
+    function showID(){
+      if(!alreadyShown){
+        document.getElementById("idCard").classList.add("show");
+        alreadyShown = true;
+      }
+    }
+    function copyNomor(){
+      const nomor = document.getElementById("danaNomor").innerText;
+      navigator.clipboard.writeText(nomor);
+      const notif = document.getElementById("notif");
+      notif.style.display = "block";
+      setTimeout(()=> notif.style.display = "none", 2000);
+    }
+  </script>
+</body>
+</html>
